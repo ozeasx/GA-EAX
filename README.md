@@ -1,4 +1,4 @@
-# GA-EAX
+# GA-EAX (fork with modifications)
 A genetic algorithm using Edge Assembly Crossover for the traveling salesman problem.
 
 This repository contains the C++ code for the following paper: <br>
