@@ -1,9 +1,9 @@
 
 *****************************************************************************
-An implementation of the Genetic Algorithm for the traveling salesman problem 
+An implementation of the Genetic Algorithm for the traveling salesman problem
 *****************************************************************************
 
-  Version: 1.0	 
+  Version: 1.0
   Author: Yuichi Nagata
   Copyright (c) Yuichi Nagata, 2012
 
@@ -12,22 +12,22 @@ An implementation of the Genetic Algorithm for the traveling salesman problem
 INTRODUCTION
 ============
 
-This code is an implementation of the Genetic Algorithm (GA) for the traveling 
-salesman problem (TSP) presented in our paper: 
+This code is an implementation of the Genetic Algorithm (GA) for the traveling
+salesman problem (TSP) presented in our paper:
 
-Yuichi Nagata and Sigenobu Kobayashi, Powerful Genetic Algorithm using Edge 
-Assembly Crossover for the Traveling Salesman Problem, Informs Journal on 
+Yuichi Nagata and Sigenobu Kobayashi, Powerful Genetic Algorithm using Edge
+Assembly Crossover for the Traveling Salesman Problem, Informs Journal on
 Computing, Vol. 25, No. 2, pp. 346–363 (2013)
 
-The code is written in C++ and is distributed for research use. The author 
+The code is written in C++ and is distributed for research use. The author
 reserves all rights to the code. The implemented algorithm is the default GA
 presented in the paper. Use the code at your own risk, and we make no guarantees
-about the correctness of this code. 
+about the correctness of this code.
 
 
 
 ========
-CONTENTS 
+CONTENTS
 ========
 
 Two program codes: "Normal" version and "Large" version
@@ -44,17 +44,17 @@ env.cpp, env.h
 kopt.cpp kopt.h
  - Local search with the 2-opt neighborhood
 
-cross.cpp cross.h 
+cross.cpp cross.h
  - Edge assembly crossover
 
 evaluator.cpp evaluator.h
  - Pre-processing procedures to the TSP instance
 
-indi.cpp, indi.h 
+indi.cpp, indi.h
  - An individual (tour)
 
 rand.cpp, rand.h
- - Procedures for generating a random number and permutation etc 
+ - Procedures for generating a random number and permutation etc
 
 sort.cpp, sort.h
  - Procedures for sorting
@@ -65,24 +65,29 @@ sort.cpp, sort.h
 
 
 =======
-COMPILE 
+COMPILE
 =======
 
-Perform the following commands. Then, the executable file "jikken" will be 
+GA-EAX:
+
+Perform the following commands. Then, the executable file "jikken" will be
 created.
 
-g++ -o jikken -O3 main.cpp env.cpp cross.cpp evaluator.cpp indi.cpp rand.cpp kopt.cpp sort.cpp -lm
+make jikken
 
+Perform the following commands. Then, the executable file "two-opt" will be
+created.
 
+make two-opt
 
 =====
 USAGE
 =====
 
-It is recommended to use the Normal version. If the Normal version cannot 
-work due to the lack of memory in your computer (e.g. 5.3GB (N = 25000)), 
-use the Large version (e.g. 730MB (N = 25000)). The Large version will be 
-about 1.3-1.5 times slower (see Appendix B of the Online Supplement of the paper). 
+It is recommended to use the Normal version. If the Normal version cannot
+work due to the lack of memory in your computer (e.g. 5.3GB (N = 25000)),
+use the Large version (e.g. 730MB (N = 25000)). The Large version will be
+about 1.3-1.5 times slower (see Appendix B of the Online Supplement of the paper).
 
 
 Execute the following command to run the GA.
@@ -99,7 +104,7 @@ Execute the following command to run the GA.
 
 
 After the execution of the GA is finished, two files (DATA_Result and DATA_BestSol)
-will be generated. 
+will be generated.
 
   DATA_Result: A summary of the results is recorded in the following entry
 
@@ -133,18 +138,34 @@ will be generated.
   - ....
   - ....
 
+================
+2-opt only
+================
+
+To generate a random population improved with 2-opt and save
+to a file, execute the following command:
+
+  ./two-opt <integer1> <string1> <string2>
+
+  Example: ./two-opt 10 rat575.tsp rat575.pop
+
+  Meaning of the arguments:
+   - <integer1> = number of solutions to generate
+   - <string1>  = instance filename (the instance must conform with TSPLIB format)
+   - <string2>  = filename to which results are written
+
 
 ================
 ADDITIONAL USAGE
 ================
 
-By using a function gEnv->WritePop() in the main function (main.cpp), all tours 
-in the population at the end of each run are recorded to a file (DATA_POP_*), 
-where * is the trial number.  
+By using a function gEnv->WritePop() in the main function (main.cpp), all tours
+in the population at the end of each run are recorded to a file (DATA_POP_*),
+where * is the trial number.
 
-When you wish to run the GA, starting with a given initial population, execute 
-the following command to run the GA, where <string3> is the filename of the 
-initial population. The file "DATA_POP_0" obtained above is an example of the 
+When you wish to run the GA, starting with a given initial population, execute
+the following command to run the GA, where <string3> is the filename of the
+initial population. The file "DATA_POP_0" obtained above is an example of the
 input file.
 
   ./jikken <integer1> <string1> <integer2> <integer3> <string2> <string3>
@@ -152,43 +173,41 @@ input file.
   Example: ./jikken 10 DATA2 100 30 rat575.tsp DATA_POP_0
 
 
-We can change the configuration of the GA by modifying the functions 
-TEnvironment::Init() and TerminationCondition() in env.cpp. 
+We can change the configuration of the GA by modifying the functions
+TEnvironment::Init() and TerminationCondition() in env.cpp.
 
   Example1: Default setting
   fStage = 1;       /* Stage I */
   fFlagC[ 0 ] = 4;  /* Diversity preservation: 1:Greedy, 3:Distance, 4:Entropy */
-  fFlagC[ 1 ] = 1;  /* Eset Type: 1:Single-AB, 2:Block2 */ 
+  fFlagC[ 1 ] = 1;  /* Eset Type: 1:Single-AB, 2:Block2 */
 
   Example2: Only Stage II is performed using EAX with the Block2 strategy
   fStage = 2;       /* Stage I */
   fFlagC[ 0 ] = 4;  /* Diversity preservation: 1:Greedy, 3:Distance, 4:Entropy */
-  fFlagC[ 1 ] = 2;  /* Eset Type: 1:Single-AB, 2:Block2 */ 
+  fFlagC[ 1 ] = 2;  /* Eset Type: 1:Single-AB, 2:Block2 */
 
   Example3: The greedy selection is used instead of the entropy-preserving selection.
   fStage = 1;       /* Stage I */
   fFlagC[ 0 ] = 1;  /* Diversity preservation: 1:Greedy, 3:Distance, 4:Entropy */
-  fFlagC[ 1 ] = 1;  /* Eset Type: 1:Single-AB, 2:Block2 */ 
+  fFlagC[ 1 ] = 1;  /* Eset Type: 1:Single-AB, 2:Block2 */
 
 
-When you wish to run the GA on a TSP instance with a specific definition of 
+When you wish to run the GA on a TSP instance with a specific definition of
 the edge length, please modify the function TEvaluator::SetInstance in evaluator.cpp
 
 
 ==========
-PARAMETERS 
+PARAMETERS
 ==========
 
-You may wish to change some parameters of the default GA. I provide some tips on how 
+You may wish to change some parameters of the default GA. I provide some tips on how
 to change several parameters.
 
- - The termination condition (see Section 2.2) can be changed by modifying the 
-   function TerminationCondition() in env.cpp. 
+ - The termination condition (see Section 2.2) can be changed by modifying the
+   function TerminationCondition() in env.cpp.
 
- - In cross.cpp, nearMax = 10 by default. This parameter corresponds to N_{near} in 
+ - In cross.cpp, nearMax = 10 by default. This parameter corresponds to N_{near} in
    the paper (see Step 5.3 of the EAX algorithm in Section 3.1). If the distance
-   matrix of an input TSP instance dose not follow the 2D Euclidean distance or 
-   similar ones (e.g., a random distance matrix), you may be able to get better 
-   results by increasing the value of this parameter. 
-
-
+   matrix of an input TSP instance dose not follow the 2D Euclidean distance or
+   similar ones (e.g., a random distance matrix), you may be able to get better
+   results by increasing the value of this parameter.
